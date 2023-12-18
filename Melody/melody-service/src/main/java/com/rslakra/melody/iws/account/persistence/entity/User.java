@@ -1,8 +1,8 @@
 package com.rslakra.melody.iws.account.persistence.entity;
 
-import com.devamatre.framework.core.BeanUtils;
-import com.devamatre.framework.core.ToString;
-import com.devamatre.framework.core.enums.EntityStatus;
+import com.devamatre.appsuite.core.BeanUtils;
+import com.devamatre.appsuite.core.ToString;
+import com.devamatre.appsuite.core.enums.EntityStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

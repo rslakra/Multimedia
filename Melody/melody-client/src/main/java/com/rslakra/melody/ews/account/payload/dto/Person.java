@@ -1,7 +1,7 @@
 package com.rslakra.melody.ews.account.payload.dto;
 
-import com.devamatre.framework.core.ToString;
-import com.devamatre.framework.spring.payload.dto.AbstractEntityDTO;
+import com.devamatre.appsuite.core.ToString;
+import com.devamatre.appsuite.spring.payload.dto.AbstractEntityDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

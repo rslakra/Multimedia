@@ -1,6 +1,6 @@
 package com.rslakra.melody.ews.artist.payload;
 
-import com.devamatre.framework.spring.payload.dto.AbstractEntityDTO;
+import com.devamatre.appsuite.spring.payload.dto.AbstractEntityDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

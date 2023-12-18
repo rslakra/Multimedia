@@ -1,10 +1,10 @@
 package com.rslakra.melody.ews.account.service.impl;
 
-import com.devamatre.framework.core.BeanUtils;
-import com.devamatre.framework.core.Payload;
-import com.devamatre.framework.spring.client.ApiRestClient;
-import com.devamatre.framework.spring.exception.InvalidRequestException;
-import com.devamatre.framework.spring.persistence.Operation;
+import com.devamatre.appsuite.core.BeanUtils;
+import com.devamatre.appsuite.core.Payload;
+import com.devamatre.appsuite.spring.client.ApiRestClient;
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.devamatre.appsuite.spring.persistence.Operation;
 import com.rslakra.melody.ews.account.payload.dto.User;
 import com.rslakra.melody.ews.account.service.UserService;
 import com.rslakra.melody.ews.framework.client.impl.AbstractClientServiceImpl;

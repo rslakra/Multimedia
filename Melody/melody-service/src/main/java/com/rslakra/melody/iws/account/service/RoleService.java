@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.account.service;
 
-import com.devamatre.framework.spring.service.AbstractService;
+import com.devamatre.appsuite.spring.service.AbstractService;
 import com.rslakra.melody.iws.account.persistence.entity.Role;
 
 import java.util.List;

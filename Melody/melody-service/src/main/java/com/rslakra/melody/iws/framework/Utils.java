@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.framework;
 
-import com.devamatre.framework.core.BeanUtils;
+import com.devamatre.appsuite.core.BeanUtils;
 
 /**
  * @author Rohtash Lakra

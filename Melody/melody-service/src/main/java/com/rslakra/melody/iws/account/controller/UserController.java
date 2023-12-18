@@ -1,8 +1,8 @@
 package com.rslakra.melody.iws.account.controller;
 
-import com.devamatre.framework.core.Payload;
-import com.devamatre.framework.spring.controller.rest.AbstractRestController;
-import com.devamatre.framework.spring.filter.Filter;
+import com.devamatre.appsuite.core.Payload;
+import com.devamatre.appsuite.spring.controller.rest.AbstractRestController;
+import com.devamatre.appsuite.spring.filter.Filter;
 import com.rslakra.melody.iws.account.filter.UserFilter;
 import com.rslakra.melody.iws.account.persistence.entity.User;
 import com.rslakra.melody.iws.account.service.UserService;
