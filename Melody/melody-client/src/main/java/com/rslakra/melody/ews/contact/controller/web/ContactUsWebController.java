@@ -21,9 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,9 +59,10 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
      * @param contactUs
      * @return
      */
-    @PostMapping("/save")
+    //@PostMapping("/save")
+    @RequestMapping("/save")
     @Override
-    public String save(ContactUs contactUs) {
+    public String save(@RequestBody ContactUs contactUs) {
         if (BeanUtils.isNotNull(contactUs.getId())) {
             ContactUs oldContactUs = contactUsService.getById(contactUs.getId());
             if (!oldContactUs.getEmail().equals(contactUs.getEmail())) {
@@ -117,9 +117,9 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
      * @param id
      * @return
      */
-    @GetMapping
+    @RequestMapping(path = {"", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id") Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
         ContactUs contactUs = null;
         if (BeanUtils.isNotNull(id)) {
             contactUs = contactUsService.getById(id);
@@ -157,7 +157,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
      * @param file
      * @return
      */
-//    @PostMapping("/upload")
+// @PostMapping("/upload")
     public ResponseEntity<Payload> upload(@RequestParam("file") MultipartFile file) {
         Payload payload = Payload.newBuilder();
         try {
@@ -191,7 +191,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
      * @param fileType
      * @return
      */
-//    @GetMapping("/download")
+// @GetMapping("/download")
     public ResponseEntity<Resource> download(@RequestParam("fileType") String fileType) {
         BeanUtils.assertNonNull(fileType, "Download 'fileType' must provide!");
         ResponseEntity responseEntity = null;
@@ -199,11 +199,11 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
         String contentDisposition;
         MediaType mediaType;
         if (CsvParser.isCSVFileType(fileType)) {
-//            contentDisposition = Parser.getContentDisposition(ArtistParser.CSV_DOWNLOAD_FILE_NAME);
+            // contentDisposition = Parser.getContentDisposition(ArtistParser.CSV_DOWNLOAD_FILE_NAME);
             mediaType = Parser.getMediaType(CsvParser.CSV_MEDIA_TYPE);
             inputStreamResource = ((CsvParser) getParser()).buildCSVResourceStream(contactUsService.getAll());
         } else if (ExcelParser.isExcelFileType(fileType)) {
-//            contentDisposition = Parser.getContentDisposition(ArtistParser.EXCEL_DOWNLOAD_FILE_NAME);
+            // contentDisposition = Parser.getContentDisposition(ArtistParser.EXCEL_DOWNLOAD_FILE_NAME);
             mediaType = Parser.getMediaType(ExcelParser.EXCEL_MEDIA_TYPE);
             inputStreamResource = ((ExcelParser) getParser()).buildStreamResources(contactUsService.getAll());
         } else {
@@ -212,7 +212,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
 
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
-//            responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
+            // responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
 
         return responseEntity;
