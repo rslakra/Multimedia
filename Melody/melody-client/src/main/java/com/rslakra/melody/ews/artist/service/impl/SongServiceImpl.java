@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.melody.ews.account.payload.dto.Role;
 import com.rslakra.melody.ews.artist.payload.Song;
 import com.rslakra.melody.ews.artist.service.SongService;
@@ -49,7 +49,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
      * @return
      */
     @Override
-    public Song validate(Operation operation, Song song) {
+    public Song validate(ServiceOperation operation, Song song) {
         if (BeanUtils.isNull(song)) {
             throw new InvalidRequestException("The song should provide!");
         }
@@ -72,7 +72,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return song;
@@ -90,7 +90,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
             throw new InvalidRequestException("The song should provide!");
         }
 
-        validate(Operation.CREATE, song);
+        validate(ServiceOperation.CREATE, song);
         song = apiRestClient.doPost(SONGS, song, Song.class);
         LOGGER.debug("-create(), song: {}", song);
         return song;
@@ -107,7 +107,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
             throw new InvalidRequestException("The songs should provide!");
         }
 
-        songs.forEach(song -> validate(Operation.CREATE, song));
+        songs.forEach(song -> validate(ServiceOperation.CREATE, song));
         songs = apiRestClient.doPost(SONGS_BATCH, songs, List.class);
         LOGGER.debug("-create(), songs:{}", songs);
         return songs;
@@ -186,7 +186,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
             throw new InvalidRequestException("The song should provide!");
         }
 
-        validate(Operation.UPDATE, song);
+        validate(ServiceOperation.UPDATE, song);
         apiRestClient.doPut(SONGS, song, Role.class);
 
         LOGGER.debug("-update(), song:{}", song);
@@ -204,7 +204,7 @@ public class SongServiceImpl extends AbstractClientServiceImpl<Song> implements 
             throw new InvalidRequestException("The songs should provide!");
         }
 
-        songs.forEach(song -> validate(Operation.UPDATE, song));
+        songs.forEach(song -> validate(ServiceOperation.UPDATE, song));
         apiRestClient.doPut(SONGS_BATCH, songs, List.class);
 
         LOGGER.debug("-update(), songs:{}", songs);

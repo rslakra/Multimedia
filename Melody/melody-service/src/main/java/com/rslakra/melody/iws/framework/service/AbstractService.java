@@ -1,7 +1,7 @@
 package com.rslakra.melody.iws.framework.service;
 
 import com.rslakra.melody.iws.framework.filter.Filter;
-import com.rslakra.melody.iws.framework.persistence.Operation;
+import com.rslakra.melody.iws.framework.persistence.ServiceOperation;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,7 +21,7 @@ public interface AbstractService<T> {
      * @param t
      * @return
      */
-    public T validate(Operation operation, T t);
+    public T validate(ServiceOperation serviceOperation, T t);
 
     /**
      * Creates the <code>T</code> object.

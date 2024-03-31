@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.melody.ews.contact.payload.ContactUs;
 import com.rslakra.melody.ews.contact.service.ContactUsService;
 import com.rslakra.melody.ews.framework.client.impl.AbstractClientServiceImpl;
@@ -48,7 +48,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
      * @return
      */
     @Override
-    public ContactUs validate(Operation operation, ContactUs contactUs) {
+    public ContactUs validate(ServiceOperation operation, ContactUs contactUs) {
         switch (operation) {
             case CREATE:
                 if (BeanUtils.isEmpty(contactUs.getEmail())) {
@@ -69,7 +69,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return contactUs;
@@ -86,7 +86,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
             throw new InvalidRequestException("The contactUs should provide!");
         }
 
-        validate(Operation.CREATE, contactUs);
+        validate(ServiceOperation.CREATE, contactUs);
         contactUs = apiRestClient.doPost(null, contactUs, ContactUs.class);
         LOGGER.debug("-create(), contactUs: {}", contactUs);
         return contactUs;
@@ -103,7 +103,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
             throw new InvalidRequestException("The contactUss should provide!");
         }
 
-        contactUss.forEach(contactUs -> validate(Operation.CREATE, contactUs));
+        contactUss.forEach(contactUs -> validate(ServiceOperation.CREATE, contactUs));
         contactUss = apiRestClient.doPost(null, contactUss, List.class);
         LOGGER.debug("-create(), contactUss:{}", contactUss);
         return contactUss;
@@ -184,7 +184,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
             throw new InvalidRequestException("The contactUs should provide!");
         }
 
-        validate(Operation.UPDATE, contactUs);
+        validate(ServiceOperation.UPDATE, contactUs);
         apiRestClient.doPut(null, contactUs, ContactUs.class);
 
         LOGGER.debug("-update(), contactUs:{}", contactUs);
@@ -202,7 +202,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
             throw new InvalidRequestException("The contactUs should provide!");
         }
 
-        contactUss.forEach(contactUs -> validate(Operation.UPDATE, contactUs));
+        contactUss.forEach(contactUs -> validate(ServiceOperation.UPDATE, contactUs));
         apiRestClient.doPut(null, contactUss, List.class);
 
         LOGGER.debug("-update(), contactUss:{}", contactUss);

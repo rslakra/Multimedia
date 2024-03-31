@@ -2,6 +2,7 @@ package com.rslakra.melody.iws.account.controller;
 
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.controller.rest.AbstractRestController;
+import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.filter.Filter;
 import com.rslakra.melody.iws.account.filter.RoleFilter;
 import com.rslakra.melody.iws.account.parser.RoleParser;
@@ -185,11 +186,16 @@ public class RoleController extends AbstractRestController<Role, Long> {
     @Override
     public ResponseEntity<Payload> delete(@PathVariable(value = "roleId") Optional<Long> idOptional) {
         validate(idOptional);
-        roleService.delete(idOptional.get());
-        Payload payload = Payload.newBuilder()
-            .withDeleted(Boolean.TRUE)
-            .withMessage("Record with id:%d deleted successfully!", idOptional);
-        return ResponseEntity.ok(payload);
+        if (idOptional.isPresent()) {
+            Long roleId = idOptional.get();
+            roleService.delete(roleId);
+            Payload payload = Payload.newBuilder()
+                .withDeleted(Boolean.TRUE)
+                .withMessage("Record with id:%d deleted successfully!", roleId);
+            return ResponseEntity.ok(payload);
+        } else {
+            throw new InvalidRequestException();
+        }
     }
 
     /**

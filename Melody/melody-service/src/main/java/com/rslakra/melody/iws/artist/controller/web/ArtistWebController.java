@@ -113,9 +113,9 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
      * @param id
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{id}"})
+    @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id") Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
         Artist artist = null;
         if (BeanUtils.isNotNull(id)) {
             artist = artistService.getById(id);

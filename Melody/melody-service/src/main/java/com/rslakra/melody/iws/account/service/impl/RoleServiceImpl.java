@@ -5,7 +5,7 @@ import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.melody.iws.account.persistence.entity.Role;
 import com.rslakra.melody.iws.account.persistence.repository.RoleRepository;
@@ -50,7 +50,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
      * @return
      */
     @Override
-    public Role validate(Operation operation, Role role) {
+    public Role validate(ServiceOperation operation, Role role) {
 
         switch (operation) {
             case CREATE:
@@ -86,7 +86,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return role;
@@ -100,7 +100,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
      */
     @Override
     public Role create(Role role) {
-        validate(Operation.CREATE, role);
+        validate(ServiceOperation.CREATE, role);
         role = roleRepository.save(role);
         return role;
     }
@@ -117,7 +117,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
             throw new InvalidRequestException("The roles should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.CREATE, role));
+        roles.forEach(role -> validate(ServiceOperation.CREATE, role));
         roles = roleRepository.saveAll(roles);
         return roles;
     }
@@ -138,7 +138,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
     public Role getById(Long id) {
         LOGGER.debug("getById({})", id);
         return roleRepository.findById(id)
-            .orElseThrow(() -> new NoRecordFoundException("id:%d", id));
+                .orElseThrow(() -> new NoRecordFoundException("id:%d", id));
 
     }
 
@@ -194,7 +194,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
      */
     @Override
     public Role update(Role role) {
-        validate(Operation.UPDATE, role);
+        validate(ServiceOperation.UPDATE, role);
         role = roleRepository.save(role);
         return role;
     }
@@ -212,9 +212,9 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role, Long> implements 
             throw new InvalidRequestException("The roles should provide!");
         }
 
-        roles.forEach(role -> validate(Operation.UPDATE, role));
+        roles.forEach(role -> validate(ServiceOperation.UPDATE, role));
         roles = roleRepository.saveAll(roles);
-        LOGGER.debug("-upsert(), roles:{}", roles);
+        LOGGER.debug("-update(), roles:{}", roles);
         return roles;
     }
 

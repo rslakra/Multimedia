@@ -6,7 +6,7 @@ import com.rslakra.melody.ews.entity.Song;
 import java.util.List;
 
 /**
- * @author Rohtash Lakra (rlakra)
+ * @author Rohtash Lakra
  * @created 5/25/22 5:00 PM
  */
 public interface DataStore {

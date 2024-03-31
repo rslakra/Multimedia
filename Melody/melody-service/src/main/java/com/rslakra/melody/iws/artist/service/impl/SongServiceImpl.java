@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.melody.iws.artist.persistence.entity.Song;
 import com.rslakra.melody.iws.artist.persistence.repository.ArtistRepository;
@@ -45,7 +45,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
      * @return
      */
     @Override
-    public Song validate(Operation operation, Song song) {
+    public Song validate(ServiceOperation operation, Song song) {
         if (BeanUtils.isNull(song)) {
             throw new InvalidRequestException("The song should provide!");
         }
@@ -83,7 +83,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return song;
@@ -98,7 +98,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
      */
     @Override
     public Song create(Song song) {
-        validate(Operation.CREATE, song);
+        validate(ServiceOperation.CREATE, song);
         song = songRepository.save(song);
         return song;
     }
@@ -115,7 +115,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
             throw new InvalidRequestException("The songs should provide!");
         }
 
-        songs.forEach(song -> validate(Operation.CREATE, song));
+        songs.forEach(song -> validate(ServiceOperation.CREATE, song));
         songs = songRepository.saveAll(songs);
         return songs;
     }
@@ -176,7 +176,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
             throw new InvalidRequestException("The songs should provide!");
         }
 
-        validate(Operation.UPDATE, song);
+        validate(ServiceOperation.UPDATE, song);
         song = songRepository.save(song);
 
         return song;
@@ -194,7 +194,7 @@ public class SongServiceImpl extends AbstractServiceImpl<Song, Long> implements 
             throw new InvalidRequestException("The songs should provide!");
         }
 
-        songs.forEach(song -> validate(Operation.UPDATE, song));
+        songs.forEach(song -> validate(ServiceOperation.UPDATE, song));
         songs = songRepository.saveAll(songs);
         return songs;
     }

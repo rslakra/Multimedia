@@ -10,7 +10,7 @@ import java.util.Map;
  * @author Rohtash Lakra
  * @created 2/8/23 10:33 AM
  */
-public abstract class AbstractFilterImpl implements Filter {
+public abstract class AbstractFilter<T> implements Filter<T> {
 
     public static final String ID = "id";
     public static final String EMAIL = "email";
@@ -19,12 +19,12 @@ public abstract class AbstractFilterImpl implements Filter {
     public static final String LAST_NAME = "lastName";
     public static final String NAME = "name";
 
-    private final Payload payload;
+    private final Payload<String, Object> payload;
 
     /**
      * @param allParams
      */
-    public AbstractFilterImpl(final Map<String, Object> allParams) {
+    public AbstractFilter(final Map<String, Object> allParams) {
         payload = Payload.newBuilder();
         payload.putAll(allParams);
     }
@@ -52,8 +52,41 @@ public abstract class AbstractFilterImpl implements Filter {
      * @return
      */
     @Override
-    public String getValue(String keyName) {
-        return (hasKey(keyName) ? payload.get(keyName).toString() : null);
+    public Object getValue(String keyName) {
+        return (hasKey(keyName) ? payload.get(keyName) : null);
+    }
+
+    /**
+     * Returns the <code>E</code> object for the provided <code>keyName</code>.
+     *
+     * @param keyName
+     * @param classType
+     * @return
+     */
+    @Override
+    public <E> E asType(String keyName, Class<E> classType) {
+        E result = null;
+        if (hasKey(keyName)) {
+            Object object = getValue(keyName);
+            if (BeanUtils.isKindOf(object, classType)) {
+                result = (E) object;
+            }
+        } else {
+            result = BeanUtils.asType(null, classType);
+        }
+
+        return result;
+    }
+
+    /**
+     * Apply filter on the provided <code>T</code> object.
+     *
+     * @param t
+     * @return
+     */
+    @Override
+    public boolean apply(T t) {
+        return false;
     }
 
     /**
@@ -62,7 +95,7 @@ public abstract class AbstractFilterImpl implements Filter {
      */
     @Override
     public Long getLong(String keyName) {
-        return hasKey(keyName) ? Long.valueOf(getValue(keyName)) : null;
+        return asType(keyName, Long.class);
     }
 
     /**
@@ -71,6 +104,6 @@ public abstract class AbstractFilterImpl implements Filter {
      */
     @Override
     public boolean getBoolean(String keyName) {
-        return hasKey(keyName) ? Boolean.valueOf(getValue(keyName)) : false;
+        return asType(keyName, Boolean.class);
     }
 }

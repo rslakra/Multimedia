@@ -139,7 +139,7 @@ public class UserController extends AbstractRestController<User, Long> {
     @Override
     public ResponseEntity<User> create(
 //        @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Create new user", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class)), required = true)
-        @Validated @RequestBody User user) {
+            @Validated @RequestBody User user) {
         user = userService.create(user);
         return ResponseEntity.ok(user);
     }

@@ -124,9 +124,9 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
      * @param userId
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{userId}"})
+    @GetMapping(path = {"/create", "/update/{userId}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "userId") Long userId) {
+    public String editObject(Model model, @PathVariable(name = "userId", required = false) Long userId) {
         User user = null;
         if (BeanUtils.isNotNull(userId)) {
             user = userService.getById(userId);

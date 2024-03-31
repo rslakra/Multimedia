@@ -125,8 +125,8 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
      * @param songId
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{songId}"})
-    public String editObject(Model model, @PathVariable(name = "songId") Long songId) {
+    @GetMapping(path = {"/create", "/update/{songId}"})
+    public String editObject(Model model, @PathVariable(name = "songId", required = false) Long songId) {
         Song song = null;
         if (BeanUtils.isNotNull(songId)) {
             song = songService.getById(songId);

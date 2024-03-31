@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.artist.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilterImpl;
+import com.devamatre.appsuite.spring.filter.AbstractFilter;
 
 import java.util.Map;
 
@@ -8,7 +8,7 @@ import java.util.Map;
  * @author Rohtash Lakra
  * @created 2/8/23 1:06 PM
  */
-public final class SongFilter extends AbstractFilterImpl {
+public final class SongFilter extends AbstractFilter {
 
     public static final String ARTIST_ID = "artistId";
     public static final String TITLE = "title";

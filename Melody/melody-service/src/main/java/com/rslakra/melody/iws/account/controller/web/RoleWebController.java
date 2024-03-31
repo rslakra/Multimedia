@@ -123,9 +123,9 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
      * @param id
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{id}"})
+    @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id") Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
         Role role = null;
         if (BeanUtils.isNotNull(id)) {
             role = roleService.getById(id);

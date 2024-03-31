@@ -123,9 +123,9 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
      * @param id
      * @return
      */
-    @RequestMapping(path = {"/create", "/update/{id}"})
+    @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id") Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
         Artist artist = null;
         if (BeanUtils.isNotNull(id)) {
             artist = artistService.getById(id);
@@ -137,7 +137,6 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
         return "views/artist/editArtist";
     }
 
-
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -145,7 +144,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
      * @param id
      * @return
      */
-    @RequestMapping("/delete/{id}")
+    @GetMapping("/delete/{id}")
     @Override
     public String delete(Model model, @PathVariable(name = "id") Long id) {
         artistService.delete(id);

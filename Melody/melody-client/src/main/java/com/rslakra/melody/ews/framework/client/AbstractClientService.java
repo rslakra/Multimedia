@@ -1,7 +1,7 @@
 package com.rslakra.melody.ews.framework.client;
 
 import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -33,7 +33,7 @@ public interface AbstractClientService<T> {
      * @param t
      * @return
      */
-    T validate(Operation operation, T t);
+    T validate(ServiceOperation operation, T t);
 
     /**
      * @param t

@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.framework.persistence.listener;
 
-import com.rslakra.melody.iws.framework.persistence.Operation;
+import com.rslakra.melody.iws.framework.persistence.ServiceOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +23,7 @@ public class BaseEntityListener<T> {
      */
     @PrePersist
     public void prePersist(Object entity) {
-        performOperation(Operation.CREATE, entity);
+        performOperation(ServiceOperation.CREATE, entity);
     }
 
     /**
@@ -31,7 +31,7 @@ public class BaseEntityListener<T> {
      */
     @PreUpdate
     public void preUpdate(Object entity) {
-        performOperation(Operation.UPDATE, entity);
+        performOperation(ServiceOperation.UPDATE, entity);
     }
 
     /**
@@ -39,18 +39,18 @@ public class BaseEntityListener<T> {
      */
     @PreRemove
     public void preRemove(Object entity) {
-        performOperation(Operation.DELETE, entity);
+        performOperation(ServiceOperation.DELETE, entity);
     }
 
     /**
-     * @param operation
+     * @param serviceOperation
      * @param entity
      */
     @Transactional(Transactional.TxType.MANDATORY)
-    protected void performOperation(Operation operation, Object entity) {
-        LOGGER.debug("performOperation({}, {})", operation, entity);
-//        EntityManager entityManager = AppContextAware.getBean(EntityManager.class);
-//        entityManager.persist(new FileHistory(file, operation));
+    public void performOperation(ServiceOperation serviceOperation, Object entity) {
+        LOGGER.debug("performOperation({}, {})", serviceOperation, entity);
+        // EntityManager entityManager = AppContextAware.getBean(EntityManager.class);
+        // entityManager.persist(new FileHistory(file, serviceOperation));
     }
 
 }

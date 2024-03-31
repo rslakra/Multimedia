@@ -5,7 +5,7 @@ import com.devamatre.appsuite.spring.exception.DuplicateRecordException;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
 import com.devamatre.appsuite.spring.exception.NoRecordFoundException;
 import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.devamatre.appsuite.spring.service.AbstractServiceImpl;
 import com.rslakra.melody.iws.artist.persistence.entity.Artist;
 import com.rslakra.melody.iws.artist.persistence.repository.ArtistRepository;
@@ -42,7 +42,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
      * @return
      */
     @Override
-    public Artist validate(Operation operation, Artist artist) {
+    public Artist validate(ServiceOperation operation, Artist artist) {
 
         switch (operation) {
             case CREATE:
@@ -76,7 +76,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return artist;
@@ -90,7 +90,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
      */
     @Override
     public Artist create(Artist artist) {
-        validate(Operation.CREATE, artist);
+        validate(ServiceOperation.CREATE, artist);
         artist = artistRepository.save(artist);
         return artist;
     }
@@ -107,7 +107,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
             throw new InvalidRequestException("The artists should provide!");
         }
 
-        artists.forEach(artist -> validate(Operation.CREATE, artist));
+        artists.forEach(artist -> validate(ServiceOperation.CREATE, artist));
         artists = artistRepository.saveAll(artists);
 
         return artists;
@@ -165,7 +165,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
      */
     @Override
     public Artist update(Artist artist) {
-        validate(Operation.UPDATE, artist);
+        validate(ServiceOperation.UPDATE, artist);
         artist = artistRepository.save(artist);
         return artist;
     }
@@ -182,7 +182,7 @@ public class ArtistServiceImpl extends AbstractServiceImpl<Artist, Long> impleme
             throw new InvalidRequestException("The artists should provide!");
         }
 
-        artists.forEach(artist -> validate(Operation.UPDATE, artist));
+        artists.forEach(artist -> validate(ServiceOperation.UPDATE, artist));
         artists = artistRepository.saveAll(artists);
         return artists;
     }

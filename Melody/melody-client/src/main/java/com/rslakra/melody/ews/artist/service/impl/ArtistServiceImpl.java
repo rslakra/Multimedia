@@ -4,7 +4,7 @@ import com.devamatre.appsuite.core.BeanUtils;
 import com.devamatre.appsuite.core.Payload;
 import com.devamatre.appsuite.spring.client.ApiRestClient;
 import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.persistence.Operation;
+import com.devamatre.appsuite.spring.persistence.ServiceOperation;
 import com.rslakra.melody.ews.account.payload.dto.Role;
 import com.rslakra.melody.ews.artist.payload.Artist;
 import com.rslakra.melody.ews.artist.service.ArtistService;
@@ -49,7 +49,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
      * @return
      */
     @Override
-    public Artist validate(Operation operation, Artist artist) {
+    public Artist validate(ServiceOperation operation, Artist artist) {
         switch (operation) {
             case CREATE:
                 if (BeanUtils.isEmpty(artist.getEmail())) {
@@ -70,7 +70,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
                 break;
 
             default:
-                throw new InvalidRequestException("Unsupported Operation!");
+                throw new InvalidRequestException("Unsupported ServiceOperation!");
         }
 
         return artist;
@@ -87,7 +87,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
             throw new InvalidRequestException("The artist should provide!");
         }
 
-        validate(Operation.CREATE, artist);
+        validate(ServiceOperation.CREATE, artist);
         artist = apiRestClient.doPost(ARTISTS, artist, Artist.class);
         LOGGER.debug("-create(), artist: {}", artist);
         return artist;
@@ -104,7 +104,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
             throw new InvalidRequestException("The artists should provide!");
         }
 
-        artists.forEach(artist -> validate(Operation.CREATE, artist));
+        artists.forEach(artist -> validate(ServiceOperation.CREATE, artist));
         artists = apiRestClient.doPost(ARTISTS_BATCH, artists, List.class);
         LOGGER.debug("-create(), artists:{}", artists);
         return artists;
@@ -183,7 +183,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
             throw new InvalidRequestException("The artist should provide!");
         }
 
-        validate(Operation.UPDATE, artist);
+        validate(ServiceOperation.UPDATE, artist);
         apiRestClient.doPut(ARTISTS, artist, Role.class);
 
         LOGGER.debug("-update(), artist:{}", artist);
@@ -201,7 +201,7 @@ public class ArtistServiceImpl extends AbstractClientServiceImpl<Artist> impleme
             throw new InvalidRequestException("The artists should provide!");
         }
 
-        artists.forEach(artist -> validate(Operation.UPDATE, artist));
+        artists.forEach(artist -> validate(ServiceOperation.UPDATE, artist));
         apiRestClient.doPut(ARTISTS_BATCH, artists, List.class);
 
         LOGGER.debug("-update(), artists:{}", artists);
