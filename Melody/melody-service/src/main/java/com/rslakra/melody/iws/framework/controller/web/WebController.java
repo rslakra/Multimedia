@@ -1,7 +1,7 @@
 package com.rslakra.melody.iws.framework.controller.web;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
 import com.rslakra.melody.iws.framework.filter.Filter;
 import org.springframework.ui.Model;
 

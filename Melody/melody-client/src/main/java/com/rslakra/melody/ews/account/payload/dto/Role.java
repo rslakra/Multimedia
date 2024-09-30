@@ -1,9 +1,9 @@
 package com.rslakra.melody.ews.account.payload.dto;
 
-import com.devamatre.appsuite.core.ToString;
-import com.devamatre.appsuite.core.enums.EntityStatus;
-import com.devamatre.appsuite.core.enums.RoleType;
-import com.devamatre.appsuite.spring.payload.dto.NamedEntityDTO;
+import com.rslakra.appsuite.core.ToString;
+import com.rslakra.appsuite.core.enums.EntityStatus;
+import com.rslakra.appsuite.core.enums.RoleType;
+import com.rslakra.appsuite.spring.payload.dto.NamedEntityDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

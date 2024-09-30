@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.artist.persistence.entity;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.melody.iws.account.persistence.entity.Person;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

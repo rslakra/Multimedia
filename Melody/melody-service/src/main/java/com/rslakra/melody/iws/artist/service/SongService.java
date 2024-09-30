@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.artist.service;
 
-import com.devamatre.appsuite.spring.service.AbstractService;
+import com.rslakra.appsuite.spring.service.AbstractService;
 import com.rslakra.melody.iws.artist.persistence.entity.Song;
 
 /**

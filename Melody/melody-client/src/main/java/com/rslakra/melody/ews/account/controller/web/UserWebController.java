@@ -1,14 +1,14 @@
 package com.rslakra.melody.ews.account.controller.web;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.Payload;
-import com.devamatre.appsuite.spring.controller.web.AbstractWebController;
-import com.devamatre.appsuite.spring.controller.web.WebController;
-import com.devamatre.appsuite.spring.exception.InvalidRequestException;
-import com.devamatre.appsuite.spring.filter.Filter;
-import com.devamatre.appsuite.spring.parser.Parser;
-import com.devamatre.appsuite.spring.parser.csv.CsvParser;
-import com.devamatre.appsuite.spring.parser.excel.ExcelParser;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.Payload;
+import com.rslakra.appsuite.spring.controller.web.AbstractWebController;
+import com.rslakra.appsuite.spring.controller.web.WebController;
+import com.rslakra.appsuite.spring.exception.InvalidRequestException;
+import com.rslakra.appsuite.spring.filter.Filter;
+import com.rslakra.appsuite.spring.parser.Parser;
+import com.rslakra.appsuite.spring.parser.csv.CsvParser;
+import com.rslakra.appsuite.spring.parser.excel.ExcelParser;
 import com.rslakra.melody.ews.account.parser.UserParser;
 import com.rslakra.melody.ews.account.payload.dto.User;
 import com.rslakra.melody.ews.account.service.UserService;

@@ -1,7 +1,7 @@
 package com.rslakra.melody.ews.framework.client;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.spring.persistence.ServiceOperation;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.spring.persistence.ServiceOperation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

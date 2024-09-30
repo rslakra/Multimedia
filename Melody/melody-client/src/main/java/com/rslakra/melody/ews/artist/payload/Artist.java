@@ -1,6 +1,6 @@
 package com.rslakra.melody.ews.artist.payload;
 
-import com.devamatre.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.BeanUtils;
 import com.rslakra.melody.ews.account.payload.dto.Person;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.artist.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 
 import java.util.Map;
 

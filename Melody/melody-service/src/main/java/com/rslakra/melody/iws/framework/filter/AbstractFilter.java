@@ -1,7 +1,7 @@
 package com.rslakra.melody.iws.framework.filter;
 
-import com.devamatre.appsuite.core.BeanUtils;
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.BeanUtils;
+import com.rslakra.appsuite.core.Payload;
 
 import java.util.Arrays;
 import java.util.Map;

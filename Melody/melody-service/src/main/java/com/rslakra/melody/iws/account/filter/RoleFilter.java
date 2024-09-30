@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.account.filter;
 
-import com.devamatre.appsuite.spring.filter.AbstractFilter;
+import com.rslakra.appsuite.spring.filter.AbstractFilter;
 import com.rslakra.melody.iws.account.persistence.entity.Role;
 
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.rslakra.melody.iws.framework.filter;
 
-import com.devamatre.appsuite.core.Payload;
+import com.rslakra.appsuite.core.Payload;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
