@@ -58,7 +58,7 @@
         <liquibase.version>4.19.0</liquibase.version>
 
         <!-- mysql -->
-        <mysql.version>8.0.32</mysql.version>
+        <mysql.version>8.2.0</mysql.version>
 
         <!-- csv parser version -->
         <commons-csv.version>1.9.0</commons-csv.version>
