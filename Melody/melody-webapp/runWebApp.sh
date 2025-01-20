@@ -13,5 +13,4 @@ clear
 #
 # Run as development settings
 npm run start:dev
-
 echo
