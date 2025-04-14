@@ -11,7 +11,7 @@ import java.util.Optional;
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     // ANONYMOUS
-    private final Optional<String> ANONYMOUS = Optional.of("ANONYMOUS");
+    private static final Optional<String> ANONYMOUS = Optional.of("ANONYMOUS");
 
 //    /**
 //     * Returns the <code>Authentication</code> object.
