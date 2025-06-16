@@ -30,21 +30,22 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/contact-us")
 public class ContactUsWebController extends AbstractWebController<ContactUs, Long>
-    implements WebController<ContactUs, Long> {
-
+        implements WebController<ContactUs, Long> {
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactUsWebController.class);
-
+    
     // contactUsService
     private final ContactUsService contactUsService;
-
+    
     /**
      * @param contactUsService
      */
@@ -52,7 +53,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public ContactUsWebController(ContactUsService contactUsService) {
         this.contactUsService = contactUsService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -73,10 +74,10 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
         } else {
             contactUs = contactUsService.create(contactUs);
         }
-
+        
         return "redirect:/contact-us";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -87,7 +88,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public String getAll(Model model) {
         return null;
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -99,7 +100,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -109,7 +110,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Create the new object or Updates the object with <code>id</code>.
      *
@@ -119,18 +120,18 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
      */
     @RequestMapping(path = {"", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         ContactUs contactUs = null;
-        if (BeanUtils.isNotNull(id)) {
-            contactUs = contactUsService.getById(id);
+        if (id.isPresent()) {
+            contactUs = contactUsService.getById(id.get());
         } else {
             contactUs = new ContactUs();
         }
         model.addAttribute("contactUs", contactUs);
-
+        
         return "views/contact-us";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -142,7 +143,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public String delete(Model model, @PathVariable(name = "id") Long id) {
         return null;
     }
-
+    
     /**
      * @return
      */
@@ -150,7 +151,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
     public Parser<ContactUs> getParser() {
         return null;
     }
-
+    
     /**
      * Uploads the file of <code>Artists</code>.
      *
@@ -167,7 +168,7 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
             } else if (ExcelParser.isExcelFile(file)) {
                 contactUss = ((ExcelParser) getParser()).readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(contactUss)) {
                 contactUss = contactUsService.create(contactUss);
@@ -180,11 +181,11 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -209,12 +210,12 @@ public class ContactUsWebController extends AbstractWebController<ContactUs, Lon
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             // responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
 }

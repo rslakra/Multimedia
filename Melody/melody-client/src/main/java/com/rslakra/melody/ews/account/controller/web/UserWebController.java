@@ -22,32 +22,29 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/users")
 public class UserWebController extends AbstractWebController<User, Long> implements WebController<User, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(UserWebController.class);
-
+    
     private final UserParser userParser;
-
+    
     // userService
     private final UserService userService;
-
+    
     /**
      * @param userService
      */
@@ -56,7 +53,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         this.userParser = new UserParser();
         this.userService = userService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -76,10 +73,10 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         } else {
             user = userService.create(user);
         }
-
+        
         return "redirect:/users/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -93,7 +90,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         model.addAttribute("users", users);
         return "views/account/user/listUsers";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -108,7 +105,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         model.addAttribute("users", users);
         return "views/account/user/listUsers";
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -118,7 +115,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param userId
@@ -126,18 +123,18 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
      */
     @GetMapping(path = {"/create", "/update/{userId}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "userId", required = false) Long userId) {
+    public String editObject(Model model, @PathVariable(name = "userId", required = false) Optional<Long> userId) {
         User user = null;
-        if (BeanUtils.isNotNull(userId)) {
-            user = userService.getById(userId);
+        if (userId.isPresent()) {
+            user = userService.getById(userId.get());
         } else {
             user = new User();
         }
         model.addAttribute("user", user);
-
+        
         return "views/account/user/editUser";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -151,7 +148,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         userService.delete(id);
         return "redirect:/users/list";
     }
-
+    
     /**
      * @return
      */
@@ -159,7 +156,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
     public Parser<User> getParser() {
         return userParser;
     }
-
+    
     /**
      * Displays the upload <code>Users</code> UI.
      *
@@ -169,7 +166,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
     public String showUploadPage() {
         return "views/account/user/uploadUsers";
     }
-
+    
     /**
      * Uploads the file of <code>Roles</code>.
      *
@@ -187,7 +184,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
             } else if (ExcelParser.isExcelFile(file)) {
                 users = userParser.readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(users)) {
                 users = userService.create(users);
@@ -200,11 +197,11 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * @return
      */
@@ -212,7 +209,7 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
     public String showDownloadPage() {
         return null;
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -238,13 +235,13 @@ public class UserWebController extends AbstractWebController<User, Long> impleme
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
-
+    
 }

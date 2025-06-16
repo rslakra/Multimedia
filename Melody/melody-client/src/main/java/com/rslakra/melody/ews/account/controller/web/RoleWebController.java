@@ -21,31 +21,28 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/roles")
 public class RoleWebController extends AbstractWebController<Role, Long> implements WebController<Role, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(RoleWebController.class);
-
+    
     private final RoleParser roleParser;
     // roleService
     private final RoleService roleService;
-
+    
     /**
      * @param roleService
      */
@@ -54,7 +51,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
         this.roleParser = new RoleParser();
         this.roleService = roleService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -71,10 +68,10 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
         } else {
             role = roleService.create(role);
         }
-
+        
         return "redirect:/roles/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -86,10 +83,10 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
     public String getAll(Model model) {
         List<Role> roles = roleService.getAll();
         model.addAttribute("roles", roles);
-
+        
         return "views/account/role/listRoles";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -101,7 +98,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -111,7 +108,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Create the new object or Updates the object with <code>id</code>.
      *
@@ -121,18 +118,18 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
      */
     @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         Role role = null;
-        if (BeanUtils.isNotNull(id)) {
-            role = roleService.getById(id);
+        if (id.isPresent()) {
+            role = roleService.getById(id.get());
         } else {
             role = new Role();
         }
         model.addAttribute("role", role);
-
+        
         return "views/account/role/editRole";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -146,7 +143,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
         roleService.delete(id);
         return "redirect:/roles/list";
     }
-
+    
     /**
      * @return
      */
@@ -154,7 +151,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
     public Parser<Role> getParser() {
         return roleParser;
     }
-
+    
     /**
      * Displays the upload <code>Roles</code> UI.
      *
@@ -164,7 +161,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
     public String showUploadPage() {
         return "views/account/role/uploadRoles";
     }
-
+    
     /**
      * Uploads the file of <code>Roles</code>.
      *
@@ -182,7 +179,7 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
             } else if (ExcelParser.isExcelFile(file)) {
                 roles = roleParser.readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(roles)) {
                 roles = roleService.create(roles);
@@ -195,11 +192,11 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -225,13 +222,13 @@ public class RoleWebController extends AbstractWebController<Role, Long> impleme
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
-
+    
 }
