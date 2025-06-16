@@ -22,31 +22,28 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/songs")
 public class SongWebController extends AbstractWebController<Song, Long> implements WebController<Song, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(SongWebController.class);
-
+    
     private final SongParser songParser;
     // songService
     private final SongService songService;
-
+    
     /**
      * @param songService
      */
@@ -55,7 +52,7 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
         this.songParser = new SongParser();
         this.songService = songService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -75,10 +72,10 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
         } else {
             song = songService.create(song);
         }
-
+        
         return "redirect:/songs/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -90,10 +87,10 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
     public String getAll(Model model) {
         List<Song> songs = songService.getAll();
         model.addAttribute("songs", songs);
-
+        
         return "song/listSongs";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -106,10 +103,10 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
     public String filter(Model model, Filter filter) {
         List<Song> songs = songService.getAll();
         model.addAttribute("songs", songs);
-
+        
         return "song/listSongs";
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -119,24 +116,24 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * @param model
      * @param songId
      * @return
      */
     @GetMapping(path = {"/create", "/update/{songId}"})
-    public String editObject(Model model, @PathVariable(name = "songId", required = false) Long songId) {
+    public String editObject(Model model, @PathVariable(name = "songId", required = false) Optional<Long> songId) {
         Song song = null;
-        if (BeanUtils.isNotNull(songId)) {
-            song = songService.getById(songId);
+        if (songId.isPresent()) {
+            song = songService.getById(songId.get());
         } else {
             song = new Song();
         }
         model.addAttribute("song", song);
         return "song/editSong";
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -150,8 +147,8 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
         songService.delete(id);
         return "redirect:/songs/list";
     }
-
-
+    
+    
     /**
      * @return
      */
@@ -159,7 +156,7 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
     public Parser<Song> getParser() {
         return songParser;
     }
-
+    
     /**
      * Displays the upload <code>Songs</code> UI.
      *
@@ -169,7 +166,7 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
     public String showUploadPage() {
         return "song/uploadSongs";
     }
-
+    
     /**
      * Uploads the file of <code>Songs</code>.
      *
@@ -186,7 +183,7 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
             } else if (ExcelParser.isExcelFile(file)) {
                 songs = ((ExcelParser) getParser()).readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(songs)) {
                 songs = songService.create(songs);
@@ -199,11 +196,11 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -228,12 +225,12 @@ public class SongWebController extends AbstractWebController<Song, Long> impleme
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
 }

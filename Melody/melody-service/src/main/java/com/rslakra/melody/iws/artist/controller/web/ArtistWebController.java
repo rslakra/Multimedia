@@ -22,31 +22,28 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * @author: Rohtash Lakra
-  * @since 09/30/2019 05:38 PM
+ * @since 09/30/2019 05:38 PM
  */
 @Controller
 @RequestMapping("/artists")
 public class ArtistWebController extends AbstractWebController<Artist, Long> implements WebController<Artist, Long> {
-
+    
     private static final Logger LOGGER = LoggerFactory.getLogger(ArtistWebController.class);
-
+    
     private final ArtistParser artistParser;
     // artistService
     private final ArtistService artistService;
-
+    
     /**
      * @param artistService
      */
@@ -55,7 +52,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
         this.artistParser = new ArtistParser();
         this.artistService = artistService;
     }
-
+    
     /**
      * Saves the <code>t</code> object.
      *
@@ -75,10 +72,10 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
         } else {
             artist = artistService.create(artist);
         }
-
+        
         return "redirect:/artists/list";
     }
-
+    
     /**
      * Returns the list of <code>T</code> objects.
      *
@@ -90,10 +87,10 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
     public String getAll(Model model) {
         List<Artist> artists = artistService.getAll();
         model.addAttribute("artists", artists);
-
+        
         return "artist/listArtists";
     }
-
+    
     /**
      * Filters the list of <code>T</code> objects.
      *
@@ -105,7 +102,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
     public String filter(Model model, Filter filter) {
         return null;
     }
-
+    
     /**
      * Create the new object or Updates the object with <code>id</code>.
      *
@@ -115,18 +112,18 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
      */
     @GetMapping(path = {"/create", "/update/{id}"})
     @Override
-    public String editObject(Model model, @PathVariable(name = "id", required = false) Long id) {
+    public String editObject(Model model, @PathVariable(name = "id", required = false) Optional<Long> id) {
         Artist artist = null;
-        if (BeanUtils.isNotNull(id)) {
-            artist = artistService.getById(id);
+        if (id.isPresent()) {
+            artist = artistService.getById(id.get());
         } else {
             artist = new Artist();
         }
         model.addAttribute("artist", artist);
-
+        
         return "artist/editArtist";
     }
-
+    
     /**
      * @param model
      * @param allParams
@@ -136,7 +133,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
     public String filter(Model model, Map<String, Object> allParams) {
         return null;
     }
-
+    
     /**
      * Deletes the object with <code>id</code>.
      *
@@ -150,7 +147,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
         artistService.delete(id);
         return "redirect:/artists/list";
     }
-
+    
     /**
      * @return
      */
@@ -158,7 +155,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
     public Parser<Artist> getParser() {
         return artistParser;
     }
-
+    
     /**
      * Displays the upload <code>Artists</code> UI.
      *
@@ -168,7 +165,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
     public String showUploadPage() {
         return "artist/uploadArtists";
     }
-
+    
     /**
      * Uploads the file of <code>Artists</code>.
      *
@@ -185,7 +182,7 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
             } else if (ExcelParser.isExcelFile(file)) {
                 artists = ((ExcelParser) getParser()).readStream(file.getInputStream());
             }
-
+            
             // check the task list is available
             if (Objects.nonNull(artists)) {
                 artists = artistService.create(artists);
@@ -198,11 +195,11 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
             payload.withMessage("Could not upload the file '%s'!", file.getOriginalFilename());
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(payload);
         }
-
+        
         payload.withMessage("Unsupported file type!");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(payload);
     }
-
+    
     /**
      * Downloads the object of <code>T</code> as <code>fileType</code> file.
      *
@@ -227,12 +224,12 @@ public class ArtistWebController extends AbstractWebController<Artist, Long> imp
         } else {
             throw new UnsupportedOperationException("Unsupported fileType:" + fileType);
         }
-
+        
         // check inputStreamResource is not null
         if (Objects.nonNull(inputStreamResource)) {
             responseEntity = Parser.buildOKResponse(contentDisposition, mediaType, inputStreamResource);
         }
-
+        
         return responseEntity;
     }
 }
