@@ -15,7 +15,7 @@
     <groupId>com.rslakra.multimedia</groupId>
     <artifactId>melody-client</artifactId>
     <version>${revision}</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>${project.artifactId}</name>
     <description>Melody-EWS Client Application</description>
 

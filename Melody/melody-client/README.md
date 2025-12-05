@@ -12,7 +12,7 @@ Melody Client is a Spring Boot web application that provides a user-friendly int
 - **Java**: 21
 - **Templating**: Thymeleaf
 - **Build Tool**: Maven
-- **Packaging**: WAR
+- **Packaging**: JAR
 - **No Database**: Stateless frontend that consumes REST API
 
 ## Features
@@ -49,14 +49,22 @@ The client will start on **port 9016** with context path `/melody`.
 ### Building the Application
 
 ```bash
-# Build the WAR file
+# Build the JAR file
 mvn clean package
 
 # Or using the provided script
 ./buildMaven.sh
 ```
 
-The WAR file will be generated in the `target/` directory.
+The JAR file will be generated in the `target/` directory.
+
+### Running the JAR File
+
+After building, you can run the application directly:
+
+```bash
+java -jar target/melody-client-0.0.0.jar
+```
 
 ## Configuration
 

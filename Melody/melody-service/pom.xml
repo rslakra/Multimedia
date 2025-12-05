@@ -16,7 +16,7 @@
     <artifactId>melody-service</artifactId>
     <version>${revision}</version>
     <name>${project.artifactId}</name>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <description>Melody-Service Application</description>
 
     <!-- properties -->
