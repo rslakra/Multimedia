@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 @Service
 public final class InMemoryDataStore implements DataStore {
 
-    private final Map<Long, Artist> ARTISTS = new HashMap<>();
-    private final Map<Long, Song> SONGS = new HashMap<>();
+    private final Map<Long, Artist> artists = new HashMap<>();
+    private final Map<Long, Song> songs = new HashMap<>();
 
     public InMemoryDataStore() {
         // Populate the Datastore with some initial artists and songs.
@@ -32,13 +32,13 @@ public final class InMemoryDataStore implements DataStore {
         pinkFloyd.getSongs().add(new Song(5L, "Comfortably Numb", 3));
         pinkFloyd.getSongs().add(new Song(6L, "High Hopes", 5));
 
-        ARTISTS.put(gordonLightfoot.getId(), gordonLightfoot);
-        ARTISTS.put(beatles.getId(), beatles);
-        ARTISTS.put(pinkFloyd.getId(), pinkFloyd);
+        artists.put(gordonLightfoot.getId(), gordonLightfoot);
+        artists.put(beatles.getId(), beatles);
+        artists.put(pinkFloyd.getId(), pinkFloyd);
 
-        for (Artist artist : ARTISTS.values()) {
+        for (Artist artist : artists.values()) {
             for (Song song : artist.getSongs()) {
-                SONGS.put(song.getId(), song);
+                songs.put(song.getId(), song);
             }
         }
     }
@@ -48,7 +48,7 @@ public final class InMemoryDataStore implements DataStore {
      */
     @Override
     public List<Artist> getArtists() {
-        return ARTISTS.values().stream().collect(Collectors.toList());
+        return artists.values().stream().collect(Collectors.toList());
     }
 
     /**
@@ -59,7 +59,7 @@ public final class InMemoryDataStore implements DataStore {
      */
     @Override
     public Artist getArtistByName(String artistName) {
-        for (Artist artist : ARTISTS.values()) {
+        for (Artist artist : artists.values()) {
             if (dasherize(artistName).equalsIgnoreCase(artist.getName())) {
                 return artist;
             }
@@ -76,7 +76,7 @@ public final class InMemoryDataStore implements DataStore {
      */
     @Override
     public Artist getArtistById(Long id) {
-        return ARTISTS.get(id);
+        return artists.get(id);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class InMemoryDataStore implements DataStore {
     @Override
     public Song createSong(Artist artist, Song song) {
         song.setId(getNextSongId());
-        SONGS.put(song.getId(), song);
+        songs.put(song.getId(), song);
         artist.getSongs().add(song);
         return song;
     }
@@ -113,7 +113,7 @@ public final class InMemoryDataStore implements DataStore {
     @Override
     public Artist createArtist(String name) {
         Artist artist = new Artist(getNextArtistId(), name);
-        ARTISTS.put(artist.getId(), artist);
+        artists.put(artist.getId(), artist);
         return artist;
     }
 
@@ -126,7 +126,7 @@ public final class InMemoryDataStore implements DataStore {
     public Long getNextArtistId() {
         long highestArtistId = 0L;
 
-        for (Artist artist : ARTISTS.values()) {
+        for (Artist artist : artists.values()) {
             if (artist.getId() > highestArtistId) {
                 highestArtistId = artist.getId();
             }
@@ -144,7 +144,7 @@ public final class InMemoryDataStore implements DataStore {
     public Long getNextSongId() {
         long highestSongId = 0L;
 
-        for (Song song : SONGS.values()) {
+        for (Song song : songs.values()) {
             if (song.getId() > highestSongId) {
                 highestSongId = song.getId();
             }

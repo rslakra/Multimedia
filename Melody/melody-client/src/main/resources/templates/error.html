@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--  main-fragment (title, otherStaticResources, header, nav, mainContent, footer)  -->
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/melody-layout :: main-fragment(
+                                                ~{::title},
+                                                ~{:: #error-static-resources},
+                                                ~{:: #error-header},
+                                                ~{:: #error-nav},
+                                                ~{:: #error-main-content},
+                                                ~{:: #error-footer}
+                                               )}">
+
+<head>
+    <!-- Title -->
+    <title>Error</title>
+    <!-- static-resources -->
+    <th:block id="error-static-resources">
+        <!-- Other static resource files -->
+    </th:block>
+</head>
+
+<!-- body -->
+<body>
+
+<!-- header -->
+<div id="error-header">
+    Error
+</div>
+
+<!-- nav-bar - Left Side -->
+<div id="error-nav" th:replace="~{/fragments/melody-fragments :: nav-default}">
+    Navigation Bar
+</div>
+
+<!-- main-content - Right Side -->
+<div id="error-main-content">
+    <!-- H2 -->
+    <h2>Error</h2>
+
+    <div class="contents"> <!-- div:contents-start -->
+
+        <!-- Form -->
+        <div class="form-style">
+            <h2 class="center-align">Error Details</h2>
+            <div class="section"><span>*</span>Error Information</div>
+            <div class="inner-wrap">
+                <div class="text-body" style="color: #d32f2f; padding: 15px; background-color: #ffebee; border: 1px solid #d32f2f; border-radius: 4px; margin: 10px 0;">
+                    <p th:if="${message}" style="margin: 5px 0;"><strong>Message:</strong> <span th:text="${message}">Error occurred</span></p>
+                    <p th:if="${error}" style="margin: 5px 0;"><strong>Error:</strong> <span th:text="${error}">Error occurred</span></p>
+                    <p th:if="${status}" style="margin: 5px 0;"><strong>Status:</strong> <span th:text="${status}">500</span></p>
+                    <p th:if="${path}" style="margin: 5px 0;"><strong>Path:</strong> <span th:text="${path}">-</span></p>
+                    <p th:if="${timestamp}" style="margin: 5px 0;"><strong>Timestamp:</strong> <span th:text="${timestamp}">-</span></p>
+                    <p th:unless="${message} or ${error}" style="margin: 5px 0;">An error occurred while processing your request.</p>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <a th:href="@{/contact-us}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Return to Contact Us</a>
+                    <a th:href="@{/home}" style="display: inline-block; padding: 10px 20px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px; margin-left: 10px;">Go to Home</a>
+                </div>
+            </div>
+        </div>
+
+    </div> <!-- div:contents-end -->
+
+</div>
+
+<!-- footer -->
+<div id="error-footer" th:replace="~{/fragments/footer :: footer}">
+    Footer
+</div>
+</body>
+</html>
+

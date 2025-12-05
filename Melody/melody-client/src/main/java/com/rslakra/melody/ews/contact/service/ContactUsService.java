@@ -9,4 +9,8 @@ import com.rslakra.melody.ews.framework.client.AbstractClientService;
  */
 public interface ContactUsService extends AbstractClientService<ContactUs> {
 
+    String CONTACTS = "contacts";
+    String CONTACTS_BATCH = "contacts/batch";
+    String CONTACTS_FILTER = "contacts/filter";
+
 }

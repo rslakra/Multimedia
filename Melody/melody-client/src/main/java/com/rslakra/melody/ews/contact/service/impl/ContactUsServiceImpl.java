@@ -87,7 +87,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         }
 
         validate(ServiceOperation.CREATE, contactUs);
-        contactUs = apiRestClient.doPost(null, contactUs, ContactUs.class);
+        contactUs = apiRestClient.doPost(ContactUsService.CONTACTS, contactUs, ContactUs.class);
         LOGGER.debug("-create(), contactUs: {}", contactUs);
         return contactUs;
     }
@@ -104,7 +104,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         }
 
         contactUss.forEach(contactUs -> validate(ServiceOperation.CREATE, contactUs));
-        contactUss = apiRestClient.doPost(null, contactUss, List.class);
+        contactUss = apiRestClient.doPost(ContactUsService.CONTACTS_BATCH, contactUss, List.class);
         LOGGER.debug("-create(), contactUss:{}", contactUss);
         return contactUss;
     }
@@ -119,7 +119,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         List<ContactUs> contactUss;
         // helps to display empty ui page.
         try {
-            contactUss = Arrays.asList(apiRestClient.doGet(null, ContactUs[].class));
+            contactUss = Arrays.asList(apiRestClient.doGet(ContactUsService.CONTACTS, ContactUs[].class));
         } catch (Exception ex) {
             LOGGER.error(ex.getLocalizedMessage(), ex);
             // helps to display empty ui page.
@@ -137,8 +137,8 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
     @Override
     public List<ContactUs> getByFilter(Map<String, Object> filters) {
         LOGGER.debug("+getByFilter({})", filters);
-        // rest/contactUss/filter?id=3
-        final ContactUs[] contactUss = apiRestClient.doGet(null, ContactUs[].class, filters);
+        // rest/contacts/filter?id=3
+        final ContactUs[] contactUss = apiRestClient.doGet(ContactUsService.CONTACTS_FILTER, ContactUs[].class, filters);
         LOGGER.debug("-getByFilter(), contactUss:{}", contactUss);
         return Arrays.asList(contactUss);
     }
@@ -185,7 +185,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         }
 
         validate(ServiceOperation.UPDATE, contactUs);
-        apiRestClient.doPut(null, contactUs, ContactUs.class);
+        apiRestClient.doPut(ContactUsService.CONTACTS, contactUs, ContactUs.class);
 
         LOGGER.debug("-update(), contactUs:{}", contactUs);
         return contactUs;
@@ -203,7 +203,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         }
 
         contactUss.forEach(contactUs -> validate(ServiceOperation.UPDATE, contactUs));
-        apiRestClient.doPut(null, contactUss, List.class);
+        apiRestClient.doPut(ContactUsService.CONTACTS_BATCH, contactUss, List.class);
 
         LOGGER.debug("-update(), contactUss:{}", contactUss);
         return contactUss;
@@ -218,7 +218,7 @@ public class ContactUsServiceImpl extends AbstractClientServiceImpl<ContactUs> i
         LOGGER.debug("+delete({})", id);
         BeanUtils.assertNonNull(id, "The contactUs's id should provide!");
         ContactUs contactUs = null;
-        apiRestClient.doDelete(null, Payload.newBuilder().ofPair("id", id));
+        apiRestClient.doDelete(ContactUsService.CONTACTS, Payload.newBuilder().ofPair("id", id));
         LOGGER.debug("-delete(), contactUs:{}", contactUs);
         return contactUs;
     }

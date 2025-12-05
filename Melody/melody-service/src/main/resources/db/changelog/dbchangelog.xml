@@ -213,5 +213,47 @@
         </createTable>
     </changeSet>
 
+    <!-- contacts -->
+    <changeSet author="rslakra" id="create_contacts_table">
+        <createTable tableName="contacts">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_contact_id"
+                             unique="true" uniqueConstraintName="uk_contact_id"
+                             nullable="false"/>
+            </column>
+            <column name="email" type="varchar(64)">
+                <constraints unique="true" uniqueConstraintName="uk_contact_email"
+                             nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="middle_name" type="varchar(64)"/>
+            <column name="last_name" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="varchar(32)"/>
+            <column name="query" type="varchar(512)"/>
+            <column name="created_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_on" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_by" type="varchar(64)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
 
 </databaseChangeLog>
